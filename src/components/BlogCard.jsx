@@ -1,37 +1,21 @@
-const BlogCard = ({ blog }) => {
-  const image = blog.images && blog.images[0] && blog.images[0].url;
-  const plain = (blog.content || '').replace(/<[^>]+>/g, '').slice(0, 120);
+import { Link } from 'react-router-dom';
+import { FALLBACK_IMG } from '../utils/mockData';
 
-  return (
-    <article className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col">
-      <div className="relative h-56 overflow-hidden">
-        {image ? (
-          <img src={image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary to-accent" />
-        )}
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary">
-          Travel
-        </div>
-      </div>
-      <div className="p-6 flex-1 flex flex-col">
-        <h3 className="font-bold text-xl text-primary mb-3 line-clamp-2 group-hover:text-accent transition-colors">
-          {blog.title}
-        </h3>
-        <p className="text-gray-500 text-sm flex-1 leading-relaxed">
-          {plain}...
-        </p>
-        <a
-          href={blog.url}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-5 text-accent font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all"
-        >
-          Read Article <span>&rarr;</span>
-        </a>
-      </div>
-    </article>
-  );
+const BlogCard = ({ blog, idx, currentPage }) => {
+    const isFeatured = idx === 0 && currentPage === 1;
+    return (
+        <Link to={`/blog/${blog.id}`} className={`group cursor-pointer flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-brand-navy/5 ${isFeatured ? 'md:col-span-2 md:flex-row' : ''}`}>
+            <div className={`overflow-hidden relative ${isFeatured ? 'md:w-1/2 h-64 md:h-auto' : 'h-56'}`}>
+                <img src={blog.img} onError={(e) => { e.target.src = FALLBACK_IMG; }} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div className={`p-6 flex flex-col flex-grow ${isFeatured ? 'md:w-1/2 justify-center' : ''}`}>
+                <div className="flex justify-between items-center text-[10px] font-bold text-brand-sunset uppercase tracking-widest mb-3">
+                    <span>{blog.author}</span><span>{blog.date}</span>
+                </div>
+                <h3 className={`font-serif font-bold text-brand-navy group-hover:text-brand-sunset transition-colors mb-3 leading-snug ${isFeatured ? 'text-2xl md:text-3xl' : 'text-xl line-clamp-2'}`}>{blog.title}</h3>
+                <p className="text-brand-gray line-clamp-3 text-sm leading-relaxed flex-grow font-sans">{blog.content}</p>
+            </div>
+        </Link>
+    );
 };
-
 export default BlogCard;

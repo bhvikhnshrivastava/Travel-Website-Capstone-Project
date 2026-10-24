@@ -1,22 +1,31 @@
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { ALL_HOTELS } from '../utils/mockData';
 import HotelCard from '../components/HotelCard';
+import { IconHeart } from '../components/Icons';
 
 const Favorites = () => {
-  const favs = useSelector((s) => s.favorites.items);
-  return (
-    <div className="pt-24 max-w-7xl mx-auto px-4 pb-10">
-      <h1 className="text-3xl font-bold text-primary mb-6">Your Wishlist</h1>
-      {favs.length === 0 ? (
-        <p className="text-gray-500">No favorites yet. Start exploring hotels!</p>
-      ) : (
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {favs.map((h) => (
-            <HotelCard key={h.id} hotel={h} />
-          ))}
+    const wishlist = useSelector(state => state.favorites.items);
+    const savedHotels = ALL_HOTELS.filter(h => wishlist.includes(h.id));
+    
+    return (
+        <div className="page-enter pt-32 max-w-7xl mx-auto px-6 pb-24 min-h-screen">
+            <div className="flex justify-between items-end mb-12 border-b border-brand-navy/10 pb-8">
+                <h1 className="font-serif text-4xl md:text-5xl font-bold text-brand-navy">Your Wishlist</h1>
+                <span className="text-brand-gray text-xs font-bold uppercase tracking-widest">{savedHotels.length} Properties</span>
+            </div>
+            {savedHotels.length === 0 ? (
+                <div className="text-center py-32 bg-white rounded-3xl border border-dashed border-brand-navy/20 flex flex-col items-center">
+                    <div className="w-24 h-24 mb-6 text-gray-200"><IconHeart filled={false} size={96} /></div>
+                    <h2 className="text-3xl font-serif font-bold text-brand-navy mb-4">Your wishlist is empty</h2>
+                    <Link to="/hotels" className="bg-brand-navy text-white font-bold py-4 px-10 rounded-xl hover:bg-brand-sunset transition-all duration-300 shadow-xl uppercase tracking-widest text-xs">Explore Hotels</Link>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {savedHotels.map(hotel => <HotelCard key={hotel.id} hotel={hotel} />)}
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
-
 export default Favorites;
