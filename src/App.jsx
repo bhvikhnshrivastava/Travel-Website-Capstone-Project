@@ -1,9 +1,3 @@
-// Add this import at the top:
-import About from './pages/About';
-
-// Add this inside your <Routes>:
-<Route path="/about" element={<About />} />
-
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -16,6 +10,7 @@ import Hotels from './pages/Hotels';
 import HotelDetail from './pages/HotelDetail';
 import Checkout from './pages/Checkout';
 import Favorites from './pages/Favorites';
+import About from './pages/About'; // <-- About page is imported here
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +31,7 @@ function App() {
             <Route path="/hotel/:id" element={<HotelDetail />} />
             <Route path="/checkout/:id" element={<Checkout />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/about" element={<About />} /> {/* <-- About page route is here */}
           </Routes>
         </main>
         <Footer />

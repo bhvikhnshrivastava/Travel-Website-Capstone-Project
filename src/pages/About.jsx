@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const About = () => {
     const [openFaq, setOpenFaq] = useState(null);
@@ -15,12 +14,11 @@ const About = () => {
         <div className="page-enter pt-32 max-w-5xl mx-auto px-6 pb-24 min-h-screen">
             <div className="text-center mb-16">
                 <h1 className="font-serif text-5xl font-bold text-brand-navy mb-4">Our Story</h1>
-                <p className="text-brand-gray font-sans max-w-2xl mx-auto">We believe travel should be effortless, inspiring, and deeply personal. Discover handpicked luxury hotels, boutique resorts, and captivating travel stories from across the globe.</p>
+                <p className="text-brand-gray font-sans max-w-2xl mx-auto text-lg">We believe travel should be effortless, inspiring, and deeply personal. Discover handpicked luxury hotels, boutique resorts, and captivating travel stories from across the globe.</p>
             </div>
 
-            {/* Co-Founders Section */}
             <div className="mb-20">
-                <h2 className="font-serif text-3xl font-bold text-brand-navy mb-8 border-b border-brand-navy/10 pb-4">Meet the Founders</h2>
+                <h2 className="font-serif text-3xl font-bold text-brand-navy mb-8 border-b border-brand-navy/10 pb-4">Meet the Team</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                     <div className="bg-white p-6 rounded-3xl shadow-sm border border-brand-navy/5">
                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=300" alt="Founder" className="w-32 h-32 object-cover rounded-full mx-auto mb-4" />
@@ -43,7 +41,6 @@ const About = () => {
                 </div>
             </div>
 
-            {/* FAQ Accordion */}
             <div>
                 <h2 className="font-serif text-3xl font-bold text-brand-navy mb-8 border-b border-brand-navy/10 pb-4">Frequently Asked Questions</h2>
                 <div className="space-y-4">
@@ -68,4 +65,5 @@ const About = () => {
         </div>
     );
 };
+
 export default About;
