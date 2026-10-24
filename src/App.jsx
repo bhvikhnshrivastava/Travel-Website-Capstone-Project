@@ -1,3 +1,9 @@
+// Add this import at the top:
+import About from './pages/About';
+
+// Add this inside your <Routes>:
+<Route path="/about" element={<About />} />
+
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';

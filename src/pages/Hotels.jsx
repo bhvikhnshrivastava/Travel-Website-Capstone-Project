@@ -1,20 +1,31 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchHotels } from '../redux/actions/apiActions';
 import { ALL_HOTELS } from '../utils/mockData';
 import HotelCard from '../components/HotelCard';
 
 const Hotels = () => {
+    const dispatch = useDispatch();
+    const { items: apiHotels } = useSelector(state => state.hotels);
     const [country, setCountry] = useState('HR');
     const [sortBy, setSortBy] = useState('recommended');
     const [currentPage, setCurrentPage] = useState(1);
-    const hotelsPerPage = 6;
+    const hotelsPerPage = 10;
+
+    // Fetch hotels from API when country changes
+    useEffect(() => {
+        dispatch(fetchHotels(country));
+    }, [country, dispatch]);
 
     const filteredAndSortedHotels = useMemo(() => {
-        let result = ALL_HOTELS.filter(h => h.country === country);
+        // Use API data if available, otherwise fallback to Mock Data
+        let result = apiHotels.length > 0 ? [...apiHotels] : ALL_HOTELS.filter(h => h.country === country);
+        
         if (sortBy === 'priceLow') result.sort((a, b) => a.price - b.price);
         if (sortBy === 'priceHigh') result.sort((a, b) => b.price - a.price);
         if (sortBy === 'rating') result.sort((a, b) => b.rating - a.rating);
         return result;
-    }, [country, sortBy]);
+    }, [country, sortBy, apiHotels]);
 
     const indexOfLastHotel = currentPage * hotelsPerPage;
     const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
@@ -30,16 +41,23 @@ const Hotels = () => {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
                     <select value={country} onChange={(e) => { setCountry(e.target.value); setCurrentPage(1); }} className="bg-white border border-brand-navy/20 text-brand-navy font-bold text-xs uppercase tracking-wider rounded-xl px-6 py-3 outline-none focus:ring-2 focus:ring-brand-sunset cursor-pointer shadow-sm">
-                        <option value="HR">Croatia (HR)</option><option value="US">United States (US)</option><option value="GB">United Kingdom (GB)</option>
+                        <option value="HR">Croatia (HR)</option>
+                        <option value="US">United States (US)</option>
+                        <option value="GB">United Kingdom (GB)</option>
                     </select>
                     <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="bg-white border border-brand-navy/20 text-brand-navy font-bold text-xs uppercase tracking-wider rounded-xl px-6 py-3 outline-none focus:ring-2 focus:ring-brand-sunset cursor-pointer shadow-sm">
-                        <option value="recommended">Recommended</option><option value="priceLow">Price: Low to High</option><option value="priceHigh">Price: High to Low</option><option value="rating">Top Rated</option>
+                        <option value="recommended">Recommended</option>
+                        <option value="priceLow">Price: Low to High</option>
+                        <option value="priceHigh">Price: High to Low</option>
+                        <option value="rating">Top Rated</option>
                     </select>
                 </div>
             </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {currentHotels.map(hotel => <HotelCard key={hotel.id} hotel={hotel} />)}
             </div>
+            
             {totalPages > 1 && (
                 <div className="flex flex-wrap justify-center mt-16 gap-3">
                     {Array.from({ length: totalPages }, (_, i) => (
@@ -50,4 +68,5 @@ const Hotels = () => {
         </div>
     );
 };
+
 export default Hotels;

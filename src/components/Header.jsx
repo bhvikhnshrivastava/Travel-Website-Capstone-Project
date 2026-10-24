@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrency } from '../redux/actions';
-import { BrandLogo, IconHeart } from './Icons';
+import { BrandLogo } from './Icons';
+import { FaHeart } from 'react-icons/fa';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -24,6 +25,9 @@ const Header = () => {
                         Hotels
                         {isHotels && <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-brand-sunset"></span>}
                     </Link>
+                    <Link to="/about" className="text-xs font-bold uppercase tracking-[0.15em] cursor-pointer transition-colors relative text-brand-navy hover:text-brand-sunset">
+                        About
+                    </Link>
                 </nav>
                 
                 <Link to="/" className="flex justify-center cursor-pointer group hover:opacity-90 transition-opacity">
@@ -36,7 +40,7 @@ const Header = () => {
                         <button onClick={() => dispatch(setCurrency('INR'))} className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${currency === 'INR' ? 'bg-brand-navy text-white' : 'text-brand-navy hover:bg-slate-100'}`}>INR</button>
                     </div>
                     <Link to="/favorites" className="relative flex items-center gap-3 px-5 py-2.5 rounded-full border-2 border-brand-navy/10 hover:border-brand-sunset cursor-pointer transition-all bg-white group shadow-sm">
-                        <span className="text-brand-navy group-hover:text-brand-sunset transition-colors"><IconHeart filled={false} /></span>
+                        <span className="text-brand-navy group-hover:text-brand-sunset transition-colors"><FaHeart className="text-red-500 text-lg" /></span>
                         <span className="text-xs font-bold text-brand-navy uppercase tracking-widest hidden md:block group-hover:text-brand-sunset transition-colors">Wishlist</span>
                         {wishlistCount > 0 && (
                             <span className="absolute -top-2 -right-2 bg-brand-sunset text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full shadow-lg border-2 border-white">{wishlistCount}</span>
