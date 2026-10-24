@@ -10,14 +10,11 @@ import Hotels from './pages/Hotels';
 import HotelDetail from './pages/HotelDetail';
 import Checkout from './pages/Checkout';
 import Favorites from './pages/Favorites';
-import About from './pages/About'; // <-- About page is imported here
+import About from './pages/About';
 
 function App() {
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    dispatch(loadFavorites());
-  }, [dispatch]);
+  useEffect(() => { dispatch(loadFavorites()); }, [dispatch]);
 
   return (
     <BrowserRouter>
@@ -31,7 +28,7 @@ function App() {
             <Route path="/hotel/:id" element={<HotelDetail />} />
             <Route path="/checkout/:id" element={<Checkout />} />
             <Route path="/favorites" element={<Favorites />} />
-            <Route path="/about" element={<About />} /> {/* <-- About page route is here */}
+            <Route path="/about" element={<About />} />
           </Routes>
         </main>
         <Footer />
@@ -39,5 +36,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

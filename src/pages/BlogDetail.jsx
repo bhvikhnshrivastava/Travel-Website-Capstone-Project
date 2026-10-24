@@ -20,13 +20,12 @@ const BlogDetail = () => {
                     </div>
                 </div>
             </div>
-
             <div className="max-w-3xl mx-auto px-6 py-20 bg-white rounded-3xl -mt-10 relative z-20 shadow-xl border border-brand-navy/5">
                 <Link to="/" className="relative z-30 inline-flex items-center gap-2 text-brand-gray hover:text-brand-sunset font-bold uppercase tracking-widest text-[10px] mb-10 transition-colors cursor-pointer">
                     &larr; Back to Stories
                 </Link>
                 <p className="text-xl text-brand-navy font-serif leading-relaxed mb-8 first-letter:text-6xl first-letter:font-bold first-letter:text-brand-sunset first-letter:float-left first-letter:mr-4">{blog.content}</p>
-                <p className="text-lg text-brand-gray leading-relaxed mb-6 font-sans">Traveling here is not just about the destination; it's about the journey and the connections you make along the way. The local cuisine, the culture, and the warm hospitality of the people will leave a lasting impression on you.</p>
+                <p className="text-lg text-brand-gray leading-relaxed mb-6 font-sans">Traveling here is not just about the destination; it's about the journey and the connections you make along the way.</p>
                 <div className="mt-16 pt-8 border-t border-gray-200 flex items-center gap-4">
                     <div className="w-16 h-16 rounded-full bg-brand-navy flex items-center justify-center text-white font-serif text-2xl font-bold">{blog.author.charAt(0)}</div>
                     <div>

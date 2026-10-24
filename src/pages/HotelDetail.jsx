@@ -1,19 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleFavorite } from '../redux/actions';
 import { ALL_HOTELS, formatPrice, FALLBACK_IMG } from '../utils/mockData';
-import { IconStar, IconPin, IconCoffee, IconMap, IconPool, IconWifi, IconSpa, IconGym } from '../components/Icons';
+import { IconStar, IconPin, IconCoffee, IconMap, IconPool, IconWifi, IconSpa, IconGym, IconHeart } from '../components/Icons';
 
 const HotelDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    
     const hotel = ALL_HOTELS.find(h => h.id === id);
+    const wishlist = useSelector(state => state.favorites.items);
     const currency = useSelector(state => state.currency);
 
-    if (!hotel) return <div className="pt-40 text-center font-serif text-3xl text-brand-navy">Hotel not found.</div>;
-
     const galleryImages = [
-        hotel.img,
+        hotel?.img || FALLBACK_IMG,
         "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=800",
         "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=800",
         "https://images.unsplash.com/photo-1582719478250-c8944994a478?auto=format&fit=crop&q=80&w=800",
@@ -31,6 +33,10 @@ const HotelDetail = () => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [galleryImages]);
 
+    if (!hotel) return <div className="pt-40 text-center font-serif text-3xl text-brand-navy">Hotel not found.</div>;
+
+    const isSaved = wishlist.includes(hotel.id);
+
     return (
         <div className="page-enter pt-24 max-w-7xl mx-auto px-6 pb-24 bg-brand-sand">
             <Link to="/hotels" className="relative z-10 inline-flex items-center gap-2 text-brand-gray hover:text-brand-sunset font-bold uppercase tracking-widest text-[10px] mb-8 transition-colors cursor-pointer mt-4">
@@ -45,11 +51,15 @@ const HotelDetail = () => {
                     </div>
                     <p className="text-brand-gray font-bold text-sm uppercase tracking-widest flex items-center"><IconPin /> {hotel.city}, {hotel.country}</p>
                 </div>
+                <button onClick={() => dispatch(toggleFavorite(hotel.id))} className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold border-2 transition-all ${isSaved ? 'bg-red-50 border-red-500 text-red-500' : 'bg-white border-brand-navy/10 text-brand-navy hover:border-brand-sunset'}`}>
+                    <IconHeart filled={isSaved} /> {isSaved ? 'Saved' : 'Add to Wishlist'}
+                </button>
             </div>
 
             <div ref={galleryRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 h-[400px] md:h-[550px]">
                 <div className="md:col-span-2 relative rounded-3xl overflow-hidden shadow-lg group">
                     <img src={activeImage} onError={(e) => { e.target.src = FALLBACK_IMG; }} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={hotel.name} />
+                    <div className="absolute bottom-4 left-4 bg-brand-navy/80 backdrop-blur-md text-white px-4 py-2 rounded-xl text-xs font-bold border border-white/20">+7 Photos</div>
                 </div>
                 <div className="grid grid-cols-2 grid-rows-2 gap-3 h-full">
                     {galleryImages.slice(1).map((img, idx) => (
@@ -69,7 +79,7 @@ const HotelDetail = () => {
 
             <div className="flex flex-wrap gap-4 mb-10">
                 <button className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl border border-brand-navy/10 text-sm font-bold text-brand-navy shadow-sm"><IconCoffee /> Food and Dining</button>
-                <button className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl border border-brand-navy/10 text-sm font-bold text-brand-navy shadow-sm"><IconMap /> Location</button>
+                <button className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl border border-brand-navy/10 text-sm font-bold text-brand-navy shadow-sm"><IconMap /> Location & Surroundings</button>
                 <button className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl border border-brand-navy/10 text-sm font-bold text-brand-navy shadow-sm"><IconPool /> Amenities</button>
             </div>
 

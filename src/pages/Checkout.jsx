@@ -9,7 +9,6 @@ const Checkout = () => {
     const navigate = useNavigate();
     const hotel = ALL_HOTELS.find(h => h.id === id);
     const currency = useSelector(state => state.currency);
-    
     const [isSuccess, setIsSuccess] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
 

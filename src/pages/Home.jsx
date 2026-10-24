@@ -1,28 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchBlogs } from '../redux/actions/apiActions';
+import { useState } from 'react';
 import { ALL_BLOGS } from '../utils/mockData';
 import BlogCard from '../components/BlogCard';
 
 const Home = () => {
-    const dispatch = useDispatch();
-    const { items: blogs } = useSelector(state => state.blogs);
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 9;
-
-    useEffect(() => {
-        if (blogs.length === 0) {
-            dispatch(fetchBlogs());
-        }
-    }, [dispatch, blogs.length]);
-
-    // Use API data if available, otherwise fallback to Mock Data
-    const activeBlogs = blogs.length > 0 ? blogs : ALL_BLOGS;
-    
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = activeBlogs.slice(indexOfFirstPost, indexOfLastPost);
-    const totalPages = Math.ceil(activeBlogs.length / postsPerPage);
+    const currentPosts = ALL_BLOGS.slice(indexOfFirstPost, indexOfLastPost);
+    const totalPages = Math.ceil(ALL_BLOGS.length / postsPerPage);
 
     return (
         <div className="page-enter pt-32">
@@ -54,5 +40,4 @@ const Home = () => {
         </div>
     );
 };
-
 export default Home;
